@@ -98,7 +98,7 @@ describe SimpleExcelImport::Base do
 
     context "生成 excel 示例文件" do
       it "should have correct field title" do
-        spreadsheet = ImportFile.open_spreadsheet(@sample_file)
+        spreadsheet = SimpleExcelImport::ImportFile.open_spreadsheet(@sample_file)
         header = spreadsheet.row(0)
         header[0].should == 'tid'
         header[1].should == 'age'
