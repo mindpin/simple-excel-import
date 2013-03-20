@@ -41,8 +41,7 @@ describe SimpleExcelImport::Base do
 
     before {
       @excel_file = Rails.root.join('spec/data/user.xls')
-      @teacher_sample_file = Rails.root.join('spec/data/teacher_sample.xls')
-      @student_sample_file = Rails.root.join('spec/data/student_sample.xls')
+      @sample_file = Rails.root.join('spec/data/sample.xls')
     }
 
     context "只解析, 不保存" do
@@ -97,9 +96,9 @@ describe SimpleExcelImport::Base do
     end
 
 
-    context "生成 teacher excel 示例文件" do
+    context "生成 excel 示例文件" do
       it "should have correct field title" do
-        spreadsheet = ImportFile.open_spreadsheet(@teacher_sample_file)
+        spreadsheet = ImportFile.open_spreadsheet(@sample_file)
         header = spreadsheet.row(0)
         header[0].should == 'tid'
         header[1].should == 'age'
@@ -109,28 +108,11 @@ describe SimpleExcelImport::Base do
 
       it "should get the correct sample users count" do
         expect{
-          @sample_users = User.get_sample_excel_teacher(@teacher_sample_file)
+          @sample_users = User.get_sample_excel_teacher(@sample_file)
         }.to change{@sample_users.count}.by(5)
       end
     end
 
-
-    context "生成 student excel 示例文件" do
-      it "should have correct field title" do
-        spreadsheet = SimpleExcelImport::ImportFile.open_spreadsheet(@student_sample_file)
-        header = spreadsheet.row(0)
-        header[0].should == 'sid'
-        header[1].should == 'age'
-        header[2].should == 'gender'
-        header[3].should == 'graduated'
-      end
-
-      it "should get the correct sample users count" do
-        expect{
-          @sample_users = User.get_sample_excel_student(@student_sample_file)
-        }.to change{@sample_users.count}.by(5)
-      end
-    end
 
   end
   
