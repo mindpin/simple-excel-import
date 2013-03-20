@@ -1,38 +1,23 @@
 require 'spec_helper'
 require 'db_init'
 
-class TestTeachersMigration < ActiveRecord::Migration
+class TestMigration < ActiveRecord::Migration
   def self.up
-    create_table :teachers, :force => true do |t|
+    create_table :users, :force => true do |t|
       t.column :tid, :string
       t.column :age, :string
       t.column :gender, :string
       t.column :nation, :string
+      t.column :role, :string
     end
 
   end
 
   def self.down
-    drop_table :teachers
+    drop_table :users
   end
 end
 
-
-class TestStudentsMigration < ActiveRecord::Migration
-  def self.up
-
-    create_table :students, :force => true do |t|
-      t.column :sid, :string
-      t.column :age, :string
-      t.column :gender, :string
-      t.column :graduated, :string
-    end
-  end
-
-  def self.down
-    drop_table :students
-  end
-end
 
 
 class User < ActiveRecord::Base
@@ -42,7 +27,7 @@ class User < ActiveRecord::Base
                                 }
 
 
-  simple_excel_import :student, :fields => [:sid, :age, :gender, :graduated],
+  simple_excel_import :student, :fields => [:tid, :age, :gender, :nation],
                                 :default => {
                                   :role => :student
                                 }
@@ -51,8 +36,8 @@ end
 
 describe SimpleExcelImport::Base do
   describe '导入老师' do
-    before(:all) {TestTeachersMigration.up}
-    after(:all) {TestTeachersMigration.down}
+    before(:all) {TestMigration.up}
+    after(:all) {TestMigration.down}
 
     before {
       @excel_file = Rails.root.join('spec/data/user.xls')
