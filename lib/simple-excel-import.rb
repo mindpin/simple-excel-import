@@ -1,3 +1,5 @@
+require 'simple_excel_import/import_file'
+
 module SimpleExcelImport
   module Base
     extend ActiveSupport::Concern
