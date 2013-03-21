@@ -108,12 +108,12 @@ describe SimpleExcelImport::Base do
 
       it "should be the correct user value" do
         @saved_users.each do |user|
-          if user.tid == '222'
-            user.gender.should == '男'
+          if user.name == 'hello3'
+            user.login.should == 'aaa3'
           end
         end
 
-        @saved_users.map{|user|user.age}.should == ["10","20","30"]
+        @saved_users.map{|user|user.email}.should == ["hi1@gmail.com","hi2@gmail.com","hi3@gmail.com"]
       end
 
     end
@@ -123,10 +123,10 @@ describe SimpleExcelImport::Base do
       it "should have correct field title" do
         spreadsheet = SimpleExcelImport::ImportFile.open_spreadsheet(@sample_file)
         header = spreadsheet.row(0)
-        header[0].should == 'tid'
-        header[1].should == 'age'
-        header[2].should == 'gender'
-        header[3].should == 'nation'
+        header[0].should == 'login'
+        header[1].should == 'name'
+        header[2].should == 'email'
+        header[3].should == 'password'
       end
 
       it "should get the correct sample users count" do
