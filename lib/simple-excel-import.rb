@@ -54,8 +54,21 @@ module SimpleExcelImport
 
             users
           end
-        )
 
+          def self.get_sample_excel_teacher
+            source_dir = File.join(File.dirname(__FILE__), '/spec/data/')
+            source = source_dir + 'empty.xls'
+            target = source_dir + 'sample.xls'
+
+            FileUtils.cp(source, target)
+
+            sample_file = Roo::Excel.new(target)
+            sample_file.default_sheet = sample_file.sheets.first 
+            sample_file.set(1, 1, 'aa')
+            sample_file.row(0).push 'some value'
+
+          end
+        )
 
       end
     end
