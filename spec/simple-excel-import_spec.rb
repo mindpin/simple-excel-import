@@ -40,8 +40,9 @@ describe SimpleExcelImport::Base do
     after(:all) {TestMigration.down}
 
     before {
-      @excel_file = Rails.root.join('spec/data/user.xls')
-      @sample_file = Rails.root.join('spec/data/sample.xls')
+      RAILS_ROOT=File.join(File.dirname(__FILE__), '../')
+      @excel_file = File.join(RAILS_ROOT, "spec/data/user.xls")
+      @sample_file = File.join(RAILS_ROOT, "spec/data/sample.xls")
     }
 
     context "只解析, 不保存" do
