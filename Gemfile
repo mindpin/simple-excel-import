@@ -7,3 +7,6 @@ gem 'mysql2'
 gem 'activesupport'
 gem 'activerecord'
 gem 'actionpack'
+
+gem 'roo', '1.10.3'
+gem 'iconv', '1.0.2'
