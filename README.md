@@ -2,7 +2,7 @@ simple-excel-import
 ===================
 
 
-## Use for
+## Target
 import model by excel file
 
 
@@ -13,7 +13,7 @@ include in Gemfile:
 gem 'simple-excel-import'
 ```
 
-## Usage
+## How-To
 
 ```ruby
 # declare in model
@@ -43,10 +43,6 @@ User.get_sample_excel_teacher
 
 ```
 
-then
-
-```ruby
-```
 
 ## TODO
 # to support nil field in field list
