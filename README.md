@@ -3,7 +3,11 @@ simple-excel-import
 
 
 ## Target
-import model by excel file
+Get data from excel file and save into database model
+
+## Support
+xls, xlsx format, Microsoft Office 1997 - 2003
+sxc format, Libre Office
 
 
 ## Install
@@ -51,4 +55,5 @@ class User
   simple_excel_import :teacher, :fields => [:tid, nil, :gender, :nation]
 end
 ```
+# more format files, etc, ods, good doc..
 
