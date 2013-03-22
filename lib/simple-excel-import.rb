@@ -10,6 +10,17 @@ module SimpleExcelImport
         fields = options[:fields]
         default = options[:default]
 
+
+        cn_fields = []
+        fields.each do |f|
+          if I18n.t("activerecord.attributes.user.#{f}").blank?
+            cn_fields = fields
+          else
+            cn_fields << f
+          end
+        end
+        
+
         class_eval %(
 
 
@@ -62,13 +73,14 @@ module SimpleExcelImport
           end
 
           def self.get_sample_excel_#{role}
+            
             source_dir = File.join(File.dirname(__FILE__), '/spec/data/')
             target_file = source_dir + 'sample.xlsx'
 
 
             p = Axlsx::Package.new
             p.workbook.add_worksheet(:name => "Basic Worksheet") do |sheet|
-              sheet.add_row #{fields}
+              sheet.add_row #{cn_fields}
             end
             p.use_shared_strings = true
             p.serialize(target_file)
