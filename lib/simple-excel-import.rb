@@ -5,8 +5,11 @@ module SimpleExcelImport
     extend ActiveSupport::Concern
 
     module ClassMethods
-      def simple_excel_import(role, fields={})
-        fields = fields[:fields]
+
+      def simple_excel_import(role, fields, default)
+        # fields = fields[:fields]
+        default = default[:default]
+        
         positions = {0 => :login, 1 => :name, 2 => :email, 3 => :password}
 
         class_eval %(
@@ -24,10 +27,12 @@ module SimpleExcelImport
               #{fields}.each do |field|
                 position = #{positions}.key(field)
                 user_params[field] = row[position]
+
+                user_params = user_params.merge(#{default})
               end
 
               user = User.new(user_params)
-          
+
               users << user
             end
 
@@ -46,16 +51,19 @@ module SimpleExcelImport
               #{fields}.each do |field|
                 position = #{positions}.key(field)
                 user_params[field] = row[position]
+
+                user_params = user_params.merge(#{default})
               end
 
               user = User.create(user_params)
+
               users << user
             end
 
             users
           end
 
-          def self.get_sample_excel_teacher
+          def self.get_sample_excel_#{role}
 
             source_dir = File.join(File.dirname(__FILE__), '/spec/data/')
             source_data = source_dir + 'sample.yaml'

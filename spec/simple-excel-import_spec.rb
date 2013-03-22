@@ -23,16 +23,19 @@ end
 
 
 class User < ActiveRecord::Base
-  simple_excel_import :teacher, :fields => [:login, :name, :email, :password],
+
+  simple_excel_import :teacher, [:login, :name, :email, :password],
                                 :default => {
                                   :role => :teacher
                                 }
 
 
-  simple_excel_import :student, :fields => [:login, :name, :email, :password],
-                                :default => {
-                                  :role => :student
-                                }
+
+  # simple_excel_import :student, :fields => [:login, :name, :email, :password],
+  #                               :default => {
+  #                                 :role => :student
+  #                               }
+
   
 end
 
