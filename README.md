@@ -46,7 +46,6 @@ User.import_excel_teacher(excel_file)
 # generate sample excel file and return file object
 User.get_sample_excel_teacher
 
-```
 
 
 ## TODO
