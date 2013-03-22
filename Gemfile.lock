@@ -23,6 +23,10 @@ GEM
       i18n (~> 0.6)
       multi_json (~> 1.0)
     arel (3.0.2)
+    axlsx (1.3.5)
+      htmlentities (~> 4.3.1)
+      nokogiri (>= 1.4.1)
+      rubyzip (>= 0.9.5)
     builder (3.0.4)
     colorize (0.5.8)
     coveralls (0.6.3)
@@ -34,6 +38,7 @@ GEM
     diff-lcs (1.1.3)
     erubis (2.7.0)
     hike (1.2.1)
+    htmlentities (4.3.1)
     i18n (0.6.4)
     iconv (1.0.2)
     journey (1.0.4)
@@ -84,6 +89,7 @@ DEPENDENCIES
   actionpack
   activerecord
   activesupport
+  axlsx
   coveralls
   iconv (= 1.0.2)
   mysql2

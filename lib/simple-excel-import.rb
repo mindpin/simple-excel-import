@@ -56,16 +56,26 @@ module SimpleExcelImport
           end
 
           def self.get_sample_excel_teacher
+
             source_dir = File.join(File.dirname(__FILE__), '/spec/data/')
-            source = source_dir + 'empty.xls'
-            target = source_dir + 'sample.xls'
+            source_data = source_dir + 'sample.yaml'
+            target_file = source_dir + 'sample.xlsx'
 
-            FileUtils.cp(source, target)
+            users_hash = YAML.load_file(source_data)
 
-            sample_file = Roo::Excel.new(target)
-            sample_file.default_sheet = sample_file.sheets.first 
-            sample_file.set(1, 1, 'aa')
-            sample_file.row(0).push 'some value'
+            p = Axlsx::Package.new
+            p.workbook.add_worksheet(:name => "Basic Worksheet") do |sheet|
+              sheet.add_row users_hash.first.keys
+              users_hash.each do |user|
+                sheet.add_row user.values
+              end
+              
+            end
+            p.use_shared_strings = true
+            p.serialize(target_file)
+
+            File.new(target_file)
+
 
           end
         )

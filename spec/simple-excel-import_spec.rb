@@ -48,6 +48,14 @@ describe SimpleExcelImport::Base do
         :tempfile => File.new(File.join(GEM_RAILS_ROOT, 'data/user.xls'))
       })
 
+
+      @sample_file = ActionDispatch::Http::UploadedFile.new({
+        :filename => 'sample.xlsx',
+        :'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 
+        :tempfile => File.new(File.join(GEM_RAILS_ROOT, 'data/sample.xlsx'))
+      })
+
+
       @parsed_users = User.parse_excel_teacher(@excel_file)
       @saved_users = User.import_excel_teacher(@excel_file)
     }
@@ -114,18 +122,23 @@ describe SimpleExcelImport::Base do
       it "should have correct field title" do
         User.get_sample_excel_teacher
 
-        # spreadsheet = SimpleExcelImport::ImportFile.open_spreadsheet(@sample_file)
-        # header = spreadsheet.row(0)
-        # header[0].should == 'login'
-        # header[1].should == 'name'
-        # header[2].should == 'email'
-        # header[3].should == 'password'
+        spreadsheet = SimpleExcelImport::ImportFile.open_spreadsheet(@sample_file)
+        header = spreadsheet.row(1)
+        
+        source_dir = File.join(File.dirname(__FILE__), '/data/')
+        source_data = source_dir + 'sample.yaml'
+        users_hash = YAML.load_file(source_data)
+
+        users_hash.first.keys.each_with_index do |user_column, index|
+          user_column.should == header[index]
+        end
+
       end
 
       it "should get the correct sample users count" do
-        # expect{
-        #   @sample_users = User.get_sample_excel_teacher
-        # }.to change{@sample_users.count}.by(5)
+        sample_file = User.get_sample_excel_teacher
+        spreadsheet = Roo::Excelx.new(sample_file.path)
+        spreadsheet.count.should == 6
       end
     end
 
