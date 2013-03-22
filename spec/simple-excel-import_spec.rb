@@ -130,9 +130,11 @@ describe "Excel导入" do
       user_fields = User.columns.map {|c| c.name }
       user_fields.delete('id')
 
+      cn_fields = User.do_i18n
+
       # 把生成的表头 跟 数据表字段比较
       header.each_with_index do |header_column, index|
-        header_column.should == user_fields[index]
+        header_column.should == cn_fields[index].to_s
       end
 
     end

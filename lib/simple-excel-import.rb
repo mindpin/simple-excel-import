@@ -1,32 +1,44 @@
 require 'simple_excel_import/import_file'
 
 module SimpleExcelImport
+  
+
   module Base
+
     extend ActiveSupport::Concern
 
     module ClassMethods
 
+      
+
       def simple_excel_import(role, options={})
         fields = options[:fields]
         default = options[:default]
-
-
-        cn_fields = []
-
-        if I18n.t("activerecord.attributes.user").kind_of? String
-          cn_fields = fields
-        else
-          fields.each do |f|
-            if I18n.t("activerecord.attributes.user").has_key?(f)
-              cn_fields << I18n.t("activerecord.attributes.user.#{f}")
-            else
-              cn_fields << f
-            end
-          end
-        end
-        
+        f = 'login'
 
         class_eval %(
+
+          def self.do_i18n
+            cn_fields = []
+
+            user = I18n.t("activerecord.attributes.user")
+
+            if user.kind_of? String
+              cn_fields = #{fields}
+            else
+              
+              #{fields}.each do |f|
+                if user.keys.include?(f)
+                  cn_fields << I18n.t("activerecord.attributes.user." + f.to_s)
+                else
+                  cn_fields << f
+                end
+              end
+
+            end
+
+            cn_fields
+          end
 
 
           def self.parse_excel_#{role}(excel_file)
@@ -78,14 +90,15 @@ module SimpleExcelImport
           end
 
           def self.get_sample_excel_#{role}
-            
+            cn_fields = do_i18n
+
             source_dir = File.join(File.dirname(__FILE__), '/spec/data/')
             target_file = source_dir + 'sample.xlsx'
 
 
             p = Axlsx::Package.new
             p.workbook.add_worksheet(:name => "Basic Worksheet") do |sheet|
-              sheet.add_row #{cn_fields}
+              sheet.add_row cn_fields
             end
             p.use_shared_strings = true
             p.serialize(target_file)
