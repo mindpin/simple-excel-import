@@ -6,9 +6,9 @@ module SimpleExcelImport
 
     module ClassMethods
 
-      def simple_excel_import(role, fields, default)
-        # fields = fields[:fields]
-        default = default[:default]
+      def simple_excel_import(role, options={})
+        fields = options[:fields]
+        default = options[:default]
         
         positions = {0 => :login, 1 => :name, 2 => :email, 3 => :password}
 

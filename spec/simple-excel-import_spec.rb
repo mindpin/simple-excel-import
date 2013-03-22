@@ -24,7 +24,7 @@ end
 
 class User < ActiveRecord::Base
 
-  simple_excel_import :teacher, [:login, :name, :email, :password],
+  simple_excel_import :teacher, :fields => [:login, :name, :email, :password],
                                 :default => {
                                   :role => :teacher
                                 }
@@ -40,7 +40,7 @@ class User < ActiveRecord::Base
 end
 
 
-describe SimpleExcelImport::Base do
+describe "Excel导入" do
   describe '导入老师' do
     before(:all) {
       TestMigration.up
