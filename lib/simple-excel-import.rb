@@ -14,7 +14,7 @@ module SimpleExcelImport
         cn_fields = []
         fields.each do |f|
           if I18n.t("activerecord.attributes.user.#{f}").blank?
-            cn_fields = f
+            cn_fields << f
           else
             cn_fields << I18n.t("activerecord.attributes.user.#{f}")
           end
