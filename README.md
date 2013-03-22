@@ -33,6 +33,7 @@ class User
                                   :role => :student
                                 }
 end
+```
 
 
 # parse excel file without saving
