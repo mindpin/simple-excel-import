@@ -13,7 +13,7 @@ module SimpleExcelImport
 
       def simple_excel_import(role, options={})
         fields = options[:fields]
-        default = options[:default]
+        default = {} || options[:default]
         f = 'login'
 
         class_eval %(
