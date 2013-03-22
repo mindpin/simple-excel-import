@@ -6,8 +6,8 @@ simple-excel-import
 Get data from excel file and save into database model
 
 ## Support
-xls, xlsx format, Microsoft Office 1997 - 2003
-sxc format, Libre Office
+- xls, xlsx format, Microsoft Office 1997 - 2003
+- sxc format, Libre Office
 
 
 ## Install
@@ -49,11 +49,11 @@ User.get_sample_excel_teacher
 
 
 ## TODO
-support nil field in field list
+- support nil field in field list
 ```ruby
 class User
   simple_excel_import :teacher, :fields => [:tid, nil, :gender, :nation]
 end
 ```
-more format files, etc, ods, good doc..
+- more format files, etc, ods, good doc..
 
