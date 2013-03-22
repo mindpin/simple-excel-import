@@ -35,12 +35,12 @@ class User
 end
 
 
-# parse excel file without save into database
+# parse excel file without saving
 User.parse_excel_teacher(excel_file)
 # -> return [user, user, user] user array
 
 
-# parse excel file and save into database
+# parse excel file and save
 User.import_excel_teacher(excel_file)
 
 # generate sample excel file and return file object
