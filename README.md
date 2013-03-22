@@ -49,11 +49,11 @@ User.get_sample_excel_teacher
 
 
 ## TODO
-# to support nil field in field list
+support nil field in field list
 ```ruby
 class User
   simple_excel_import :teacher, :fields => [:tid, nil, :gender, :nation]
 end
 ```
-# more format files, etc, ods, good doc..
+more format files, etc, ods, good doc..
 
