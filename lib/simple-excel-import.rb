@@ -9,12 +9,10 @@ module SimpleExcelImport
       def simple_excel_import(role, options={})
         fields = options[:fields]
         default = options[:default]
-        
-        positions = {0 => :login, 1 => :name, 2 => :email, 3 => :password}
 
         class_eval %(
 
-      
+
           def self.parse_excel_#{role}(excel_file)
             user_params = {}
             users = []
@@ -25,7 +23,7 @@ module SimpleExcelImport
               row = Hash[[header, spreadsheet.row(i)].transpose].values
 
               #{fields}.each do |field|
-                position = #{positions}.key(field)
+                position = #{fields}.index(field)
                 user_params[field] = row[position]
 
                 user_params = user_params.merge(#{default})
@@ -49,7 +47,7 @@ module SimpleExcelImport
               row = Hash[[header, spreadsheet.row(i)].transpose].values
 
               #{fields}.each do |field|
-                position = #{positions}.key(field)
+                position = #{fields}.index(field)
                 user_params[field] = row[position]
 
                 user_params = user_params.merge(#{default})
@@ -64,26 +62,18 @@ module SimpleExcelImport
           end
 
           def self.get_sample_excel_#{role}
-
             source_dir = File.join(File.dirname(__FILE__), '/spec/data/')
-            source_data = source_dir + 'sample.yaml'
             target_file = source_dir + 'sample.xlsx'
 
-            users_hash = YAML.load_file(source_data)
 
             p = Axlsx::Package.new
             p.workbook.add_worksheet(:name => "Basic Worksheet") do |sheet|
-              sheet.add_row users_hash.first.keys
-              users_hash.each do |user|
-                sheet.add_row user.values
-              end
-              
+              sheet.add_row #{fields}
             end
             p.use_shared_strings = true
             p.serialize(target_file)
 
             File.new(target_file)
-
 
           end
         )

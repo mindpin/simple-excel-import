@@ -31,10 +31,10 @@ class User < ActiveRecord::Base
 
 
 
-  # simple_excel_import :student, :fields => [:login, :name, :email, :password],
-  #                               :default => {
-  #                                 :role => :student
-  #                               }
+  simple_excel_import :student, :fields => [:login, :name, :email, :password],
+                                :default => {
+                                  :role => :student
+                                }
 
   
 end
@@ -125,22 +125,18 @@ describe "Excel导入" do
 
         spreadsheet = SimpleExcelImport::ImportFile.open_spreadsheet(@sample_file)
         header = spreadsheet.row(1)
-        
-        source_dir = File.join(File.dirname(__FILE__), '/data/')
-        source_data = source_dir + 'sample.yaml'
-        users_hash = YAML.load_file(source_data)
 
-        users_hash.first.keys.each_with_index do |user_column, index|
-          user_column.should == header[index]
+        # 取得表的字段列表，并把 id 字段去掉
+        user_fields = User.columns.map {|c| c.name }
+        user_fields.delete('id')
+
+        # 把生成的表头 跟 数据表字段比较
+        header.each_with_index do |header_column, index|
+          header_column.should == user_fields[index]
         end
 
       end
 
-      it "should get the correct sample users count" do
-        sample_file = User.get_sample_excel_teacher
-        spreadsheet = Roo::Excelx.new(sample_file.path)
-        spreadsheet.count.should == 6
-      end
     end
 
 
