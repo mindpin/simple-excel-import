@@ -45,6 +45,8 @@ describe "Excel导入" do
   before(:all) {
     TestMigration.up
 
+    User.get_sample_excel_teacher
+
     @excel_file = ActionDispatch::Http::UploadedFile.new({
       :filename => 'user.xls',
       :type => 'application/vnd.ms-excel',

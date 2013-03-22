@@ -12,11 +12,16 @@ module SimpleExcelImport
 
 
         cn_fields = []
-        fields.each do |f|
-          if I18n.t("activerecord.attributes.user.#{f}").blank?
-            cn_fields << f
-          else
-            cn_fields << I18n.t("activerecord.attributes.user.#{f}")
+
+        if I18n.t("activerecord.attributes.user").kind_of? String
+          cn_fields = fields
+        else
+          fields.each do |f|
+            if I18n.t("activerecord.attributes.user").has_key?(f)
+              cn_fields << I18n.t("activerecord.attributes.user.#{f}")
+            else
+              cn_fields << f
+            end
           end
         end
         
