@@ -123,8 +123,6 @@ describe "Excel导入" do
   describe "生成 excel 示例文件" do
 
     it "should have correct field title" do
-      User.get_sample_excel_teacher
-
       spreadsheet = SimpleExcelImport::ImportFile.open_spreadsheet(@sample_file)
       header = spreadsheet.row(1)
 
