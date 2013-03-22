@@ -71,8 +71,6 @@ describe SimpleExcelImport::Base do
       end
 
       it "should not be saved" do
-        @parsed_users = User.parse_excel_teacher(@excel_file)
-
         @parsed_users.each do |user|
           user.new_record?.should == true
         end

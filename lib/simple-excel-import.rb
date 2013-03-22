@@ -12,7 +12,7 @@ module SimpleExcelImport
         class_eval %(
 
       
-          def self.parse_excel_teacher(excel_file)
+          def self.parse_excel_#{role}(excel_file)
             user_params = {}
             users = []
 
@@ -34,7 +34,7 @@ module SimpleExcelImport
             users
           end
 
-          def self.import_excel_teacher(excel_file)
+          def self.import_excel_#{role}(excel_file)
             user_params = {}
             users = []
 
