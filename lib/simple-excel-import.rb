@@ -1,4 +1,6 @@
 # -*- encoding : utf-8 -*-
+require 'roo'
+
 module SimpleExcelImport
   module Base
     extend ActiveSupport::Concern
