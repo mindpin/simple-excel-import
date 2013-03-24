@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 require 'mysql2'
 require 'active_record'
 require 'yaml'

@@ -1,0 +1,5 @@
+test:
+  adapter: mysql2
+  database: simple-excel-import
+  username: root
+  encoding: utf8

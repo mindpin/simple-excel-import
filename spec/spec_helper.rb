@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 require 'rubygems'
 
 require 'coveralls'
@@ -9,7 +10,6 @@ require 'action_dispatch'
 require 'mysql2'
 
 require 'roo'
-require 'Axlsx'
-
+require 'axlsx'
 
 require 'simple-excel-import'

@@ -1,113 +1,85 @@
-require 'simple_excel_import/import_file'
-
+# -*- encoding : utf-8 -*-
 module SimpleExcelImport
-  
-
   module Base
-
     extend ActiveSupport::Concern
 
     module ClassMethods
-
-      
-
-      def simple_excel_import(role, options={})
+      def simple_excel_import(role, options = {})
         fields = options[:fields]
-        default = {} || options[:default]
-        f = 'login'
+        default = options[:default] || {}
 
         class_eval %(
-
-          def self.do_i18n
-            cn_fields = []
-
-            user = I18n.t("activerecord.attributes.user")
-
-            if user.kind_of? String
-              cn_fields = #{fields}
-            else
-              
-              #{fields}.each do |f|
-                if user.keys.include?(f)
-                  cn_fields << I18n.t("activerecord.attributes.user." + f.to_s)
-                else
-                  cn_fields << f
-                end
-              end
-
-            end
-
-            cn_fields
-          end
-
-
           def self.parse_excel_#{role}(excel_file)
-            user_params = {}
-            users = []
-
-            spreadsheet = SimpleExcelImport::ImportFile.open_spreadsheet(excel_file)
-            header = spreadsheet.row(1)
-            (2..spreadsheet.last_row).each do |i|
-              row = Hash[[header, spreadsheet.row(i)].transpose].values
-
-              #{fields}.each do |field|
-                position = #{fields}.index(field)
-                user_params[field] = row[position]
-
-                user_params = user_params.merge(#{default})
-              end
-
-              user = User.new(user_params)
-
-              users << user
-            end
-
-            users
+            _simple_excel_import(#{fields}, #{default}, excel_file)
           end
 
           def self.import_excel_#{role}(excel_file)
-            user_params = {}
-            users = []
-
-            spreadsheet = SimpleExcelImport::ImportFile.open_spreadsheet(excel_file)
-            header = spreadsheet.row(1)
-            (2..spreadsheet.last_row).each do |i|
-              row = Hash[[header, spreadsheet.row(i)].transpose].values
-
-              #{fields}.each do |field|
-                position = #{fields}.index(field)
-                user_params[field] = row[position]
-
-                user_params = user_params.merge(#{default})
-              end
-
-              user = User.create(user_params)
-
-              users << user
+            models = _simple_excel_import(#{fields}, #{default}, excel_file)
+            models.each do |model|
+              model.save
             end
-
-            users
+            models
           end
 
           def self.get_sample_excel_#{role}
-            cn_fields = do_i18n
-
-            source_dir = File.join(File.dirname(__FILE__), '/spec/data/')
-            target_file = source_dir + 'sample.xlsx'
-
-
-            p = Axlsx::Package.new
-            p.workbook.add_worksheet(:name => "Basic Worksheet") do |sheet|
-              sheet.add_row cn_fields
-            end
-            p.use_shared_strings = true
-            p.serialize(target_file)
-
-            File.new(target_file)
-
+            _simple_excel_import_generate_sample(#{fields}, #{default})
           end
         )
+      end
 
+      private
+        def _simple_excel_import(fields, default, excel_file)
+          spreadsheet = SimpleExcelImport::ImportFile.open_spreadsheet(excel_file)
+          
+          models = []
+          (2..spreadsheet.last_row).each do |i|
+            row = spreadsheet.row(i)
+
+            params = {}
+            fields.each_index do |index|
+              params[fields[index]] = row[index]
+            end
+            params.merge! default
+
+            models << self.new(params)
+          end
+
+          models
+        end
+
+        def _simple_excel_import_generate_sample(fields, default)
+          file = Tempfile.open [self.to_s, '.xlsx']
+
+          output = Axlsx::Package.new
+          output.workbook.add_worksheet(:name => 'sheet') do |sheet|
+            field_strs = fields.map do |field|
+              I18n.t("activerecord.attributes.book.#{field}")
+            end
+
+            sheet.add_row field_strs
+          end
+          output.use_shared_strings = true
+          output.serialize(file)
+          file
+        end
+    end
+  end
+
+  module ImportFile
+    class FormatError < Exception; end
+
+    def self.open_spreadsheet(file)
+      extname = File.extname file
+
+      case extname
+        when '.sxc' 
+          Roo::Openoffice.new(file.path, nil, :ignore)
+        when '.xls' 
+          Roo::Excel.new(file.path, nil, :ignore)
+        when '.xlsx' 
+          Roo::Excelx.new(file.path, nil, :ignore)
+        else 
+          raise FormatError.new "Unsupported file format #{extname}"
       end
     end
   end
