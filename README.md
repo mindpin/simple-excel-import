@@ -51,8 +51,8 @@ Book.parse_excel_program(excel_file)
 you can call Model.import_excel_xxx to save models into database
 
 ```ruby
-Book.parse_excel_common(excel_file)
-Book.parse_excel_program(excel_file)
+Book.import_excel_common(excel_file)
+Book.import_excel_program(excel_file)
 ```
 
 ## TODO
