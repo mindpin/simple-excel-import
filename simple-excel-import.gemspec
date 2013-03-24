@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = 'simple-excel-import'
-  s.version = '0.0.2'
+  s.version = '0.0.2.1'
   s.platform = Gem::Platform::RUBY
   s.date = '2013-03-25'
   s.summary = 'simple-excel-import'
