@@ -21,11 +21,10 @@ end
 class Book < ActiveRecord::Base
   simple_excel_import :common, :fields => [:title, :price, :kind]
 
-
   simple_excel_import :program, :fields => [:title, :price, :url],
-                                 :default => {
-                                   :kind => '编程'
-                                 }
+                                :default => {
+                                  :kind => '编程'
+                                }
 end
 
 
