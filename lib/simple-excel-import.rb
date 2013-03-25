@@ -53,7 +53,7 @@ module SimpleExcelImport
           output = Axlsx::Package.new
           output.workbook.add_worksheet(:name => 'sheet') do |sheet|
             field_strs = fields.map do |field|
-              I18n.t("activerecord.attributes.book.#{field}")
+              I18n.t("activerecord.attributes.#{self.name.downcase}.#{field}")
             end
 
             sheet.add_row field_strs
