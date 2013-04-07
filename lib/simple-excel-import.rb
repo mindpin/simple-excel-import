@@ -1,5 +1,6 @@
 # -*- encoding : utf-8 -*-
 require 'roo'
+require 'axlsx'
 
 module SimpleExcelImport
   module Base
