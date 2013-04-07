@@ -72,7 +72,13 @@ module SimpleExcelImport
     class FormatError < Exception; end
 
     def self.open_spreadsheet(file)
-      extname = File.extname file.path
+
+      extname = case file
+      when ActionDispatch::Http::UploadedFile
+        File.extname file.original_filename
+      else
+        File.extname file
+      end
 
       case extname
         when '.sxc' 
