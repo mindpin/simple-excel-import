@@ -251,6 +251,21 @@ describe 'Excel导入' do
     }
   end
 
+  describe ActionDispatch::Http::UploadedFile do
+    before {
+      upload_file = ActionDispatch::Http::UploadedFile.new({
+        :filename => 'common_books.xls',
+        :tempfile => File.new('spec/data/common_books.xls')
+      })
+
+      Book.import_excel_common upload_file
+    }
+
+    it {
+      Book.count.should == 3
+    }
+  end
+
 
   # describe "生成 excel 示例文件" do
   #   it "should have correct field title" do
