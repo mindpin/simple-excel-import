@@ -40,7 +40,7 @@ module SimpleExcelImport
 
             params = {}
             fields.each_index do |index|
-              params[fields[index]] = row[index]
+              params[fields[index]] = row[index].to_s
             end
             params.merge! default
 
