@@ -40,7 +40,8 @@ module SimpleExcelImport
 
             params = {}
             fields.each_index do |index|
-              params[fields[index]] = row[index].to_s
+              data = row[index].is_a?(Float) ? row[index].to_i.to_s : row[index].to_s
+              params[fields[index]] = data
             end
             params.merge! default
 
